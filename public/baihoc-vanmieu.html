@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Văn Miếu - Quốc Tử Giám</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --highlight: #f5d452;
+      --transition: 0.3s ease-in-out;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    header {
+      background-color: #2e1e10;
+      padding: 1.2rem 2rem;
+      text-align: center;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--highlight);
+      margin: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h2 {
+      font-size: 1.6rem;
+      color: var(--btn-bg);
+      margin-top: 2rem;
+    }
+    img.hero {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      margin: 1rem 0;
+    }
+    .video-wrapper {
+      margin: 2rem 0;
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      border: none;
+      border-radius: 12px;
+    }
+    .btn {
+      background-color: var(--btn-bg);
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 1rem;
+      display: inline-block;
+      transition: background-color var(--transition);
+    }
+    .btn:hover { background-color: var(--btn-hover); }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Văn Miếu – Quốc Tử Giám</h1>
+  </header>
+  <div class="container">
+    <p>Văn Miếu - Quốc Tử Giám là trường đại học đầu tiên của Việt Nam, là biểu tượng của truyền thống hiếu học và nền giáo dục thời phong kiến.</p>
+
+    <img src="images/vanmieu.jpg" alt="Cổng chính Văn Miếu" class="hero">
+
+    <h2>1. Lịch sử hình thành</h2>
+    <p>Văn Miếu được xây dựng vào năm 1070 dưới thời vua Lý Thánh Tông, và Quốc Tử Giám được lập vào năm 1076. Nơi đây ban đầu thờ Khổng Tử, sau trở thành trung tâm giáo dục cao cấp dành cho con em quý tộc.</p>
+
+    <h2>2. Kiến trúc nổi bật</h2>
+    <p>Toàn bộ khuôn viên gồm 5 lớp sân với kiến trúc truyền thống như Khuê Văn Các, nhà bia tiến sĩ, giếng Thiên Quang. Từng phần đều mang đậm dấu ấn lịch sử và văn hóa.</p>
+
+    <h2>3. Vai trò giáo dục</h2>
+    <p>Đây là nơi đào tạo nhân tài cho quốc gia, tổ chức thi cử, vinh danh các tiến sĩ. Những giá trị giáo dục được gìn giữ qua các triều đại cho đến ngày nay.</p>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/1AehovM4A1g" title="Giới thiệu về Văn Miếu - Quốc Tử Giám" allowfullscreen></iframe>
+    </div>
+
+    <h2>4. Câu hỏi ôn tập</h2>
+    <ul>
+      <li>Văn Miếu được xây dựng vào năm nào?</li>
+      <li>Ai là người được thờ tại Văn Miếu?</li>
+      <li>Ý nghĩa của bia tiến sĩ trong khuôn viên?</li>
+    </ul>
+
+    <h2>5. Tài liệu giáo viên</h2>
+    <a href="taitailieu-vanmieu.pdf" class="btn">Tải giáo án PDF</a>
+
+    <div style="margin-top: 2rem;">
+      <a href="baihoc.html" class="btn">← Quay lại danh sách</a>
+      <a href="baihoc-hoangthanh.html" class="btn">Tiếp theo →</a>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Dự án giáo dục AI & Di tích Việt Nam.
+  </footer>
+</body>
+</html>
+<!-- Compare this snippet from public/baihoc-vanmieu.html: -->
+<!--         <img src="images/vanmieu.jpg" alt="Văn Miếu">
+ -->

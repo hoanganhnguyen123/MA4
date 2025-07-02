@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trải nghiệm Hình ảnh AI</title>
+  <!-- Mapbox CSS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <!-- Leaflet CSS (duy trì để hạ fallback nếu muốn) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --text-light: #fff1c7;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .gallery {
+  column-count: 3;
+  column-gap: 16px;
+  padding: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.gallery-item img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 95%;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: #f2ebeb;
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 0.3s ease-in-out;
+
+  /* Ngăn tràn chữ */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gallery-item:hover .caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Nút tải xuống */
+.download-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(249, 247, 247, 0.5);
+  color: rgb(13, 13, 13);
+  text-decoration: none;
+  padding: 4px 8px;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  z-index: 2;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #2e1e10;
+      color: var(--text-light);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0; background: #f0f2f5;
+    }
+    h2 {
+      text-align: center;
+      padding: 1rem 0;
+      color: #333;
+    }
+    #controls {
+      max-width: 1200px;
+      margin: 0 auto 10px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #controls > div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #controls label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    #yearRange {
+      flex: 1;
+    }
+    #map {
+      height: 700px;
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .popup-gallery img {
+      width: 60px;
+      margin: 4px;
+      border-radius: 4px;
+    }
+    iframe {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+    #image-controls {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 15px 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 1rem;
+}
+
+#image-controls label {
+  margin-right: 10px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+#image-controls strong {
+  color: #161616;
+  margin-right: 6px;
+}
+
+#image-year-range {
+  width: 220px;
+}
+
+  .popup-gallery img {
+    width: 60px;
+    margin: 4px;
+    border-radius: 4px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+  }
+
+  .popup-gallery img:hover {
+    transform: scale(8);
+    position: relative;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .leaflet-popup-content {
+    overflow: visible !important; /* để ảnh hover không bị che */
+  }
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Bản đồ lịch sử Việt Nam – Giao diện nâng cao</h2>
+
+<div id="controls" style="width: auto; flex: 1; display: flex; align-items: center; gap: 8px;background-color: #dc8154;">
+  <div>
+    <strong>Thời kỳ:</strong>
+    <label><input type="checkbox" class="period-filter" value="Lý" checked> Lý</label>
+    <label><input type="checkbox" class="period-filter" value="Trần" checked> Trần</label>
+    <label><input type="checkbox" class="period-filter" value="Nguyễn" checked> Nguyễn</label>
+    <label><input type="checkbox" class="period-filter" value="Hiện đại" checked> Hiện đại</label>
+    <label><input type="checkbox" class="period-filter" value="Pháp thuộc" checked> Pháp thuộc</label>
+    <label><input type="checkbox" class="period-filter" value="Hồ" checked> Hồ</label>
+  </div>
+  <div>
+    <strong>Vùng miền:</strong>
+    <label><input type="checkbox" class="region-filter" value="Bắc" checked> Bắc</label>
+    <label><input type="checkbox" class="region-filter" value="Trung" checked> Trung</label>
+    <label><input type="checkbox" class="region-filter" value="Nam" checked> Nam</label>
+  </div>
+  <div style="flex:1; display:flex; align-items:center; gap:8px;">
+    <strong>Năm ≤ </strong><span id="yearValue">2024</span>
+    <input type="range" id="yearRange" min="700" max="2024" value="2024" step="1">
+  </div>
+</div>
+
+<div id="map"></div>
+<!-- Mapbox GL JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Lightbox -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script>
+  // Mapbox + Leaflet hybrid – ưu tiên Mapbox
+  var map = L.map('map').setView([15.5, 106], 5.5);
+// CartoDB Positron: nhẹ, đẹp, hiện đại
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+ // Icon theo thời kỳ
+  var icons = {
+    "Lý": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2721/2721150.png", iconSize: [32,32] }),
+    "Trần": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2922/2922506.png", iconSize: [32,32] }),
+    "Nguyễn": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/4140/4140047.png", iconSize: [32,32] }),
+    "Hiện đại": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2620/2620973.png", iconSize: [32,32] }),
+    "Pháp thuộc": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2242/2242656.png", iconSize: [32,32] }),
+    "Hồ": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/3418/3418515.png", iconSize: [32,32] })
+  };
+
+  // Dữ liệu...
+ var data = [
+  // Miền Bắc
+  {
+    name: "Chiến thắng Bạch Đằng",
+    year: 938,
+    lat: 20.9,
+    lng: 106.85,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Ngô Quyền đánh tan quân Nam Hán.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/Bach_Dang_938.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Ngô_Quyền.jpg/800px-Ngô_Quyền.jpg"
+    ]
+  },
+  {
+    name: "Kinh đô Hoa Lư",
+    year: 968,
+    lat: 20.255,
+    lng: 105.964,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Đinh Bộ Lĩnh lập nước Đại Cồ Việt.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hoa_Lu_ancient_capital.jpg"
+    ]
+  },
+  {
+    name: "Thăng Long được thành lập",
+    year: 1010,
+    lat: 21.028,
+    lng: 105.854,
+    period: "Lý",
+    region: "Bắc",
+    description: "Lý Thái Tổ dời đô ra Thăng Long.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/HoangThanhThangLong.jpg"
+    ],
+    video: "https://www.youtube.com/embed/VJHwPaDNttE"
+  },
+  {
+    name: "Chùa Một Cột",
+    year: 1049,
+    lat: 21.0285,
+    lng: 105.8542,
+    period: "Lý",
+    region: "Bắc",
+    description: "Một trong những biểu tượng của Hà Nội.",
+   images: [
+  "https://upload.wikimedia.org/wikipedia/commons/9/90/One_Pillar_Pagoda_Hanoi.jpg",
+  "https://upload.wikimedia.org/wikipedia/vi/8/84/Ch%C3%B9a_m%E1%BB%99t_c%E1%BB%99t_1896.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/5c/One_Pillar_Pagoda_0327.JPG", 
+  "https://upload.wikimedia.org/wikipedia/commons/5/5f/One_Pillar_Pagoda_0326.JPG",
+  "https://upload.wikimedia.org/wikipedia/commons/3/3d/Ch%C3%B9a_Di%C3%AAn_H%E1%BB%B1u.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/08/One_Pillar_Pagoda_0325.JPG",
+]
+
+  },
+  {
+    name: "Chiến thắng Đông Bộ Đầu",
+    year: 1285,
+    lat: 21.038,
+    lng: 105.875,
+    period: "Trần",
+    region: "Bắc",
+    description: "Trần Hưng Đạo đánh tan quân Nguyên.",
+    images: [
+  "/images/diadao.png",
+    "/images/tran_hung_dao_statue.jpg"
+    ]
+  },
+  {
+    name: "Chiến thắng Bạch Đằng lần thứ 2",
+    year: 1288,
+    lat: 20.9,
+    lng: 106.85,
+    period: "Trần",
+    region: "Bắc",
+    description: "Trần Quốc Tuấn đánh tan quân Nguyên lần thứ hai.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/Bach_Dang_1288.jpg"
+    ]
+  },
+  {
+    name: "Chiến thắng Chi Lăng - Xương Giang",
+    year: 1427,
+    lat: 21.3,
+    lng: 106.2,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Lê Lợi đánh tan quân Minh.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/4/4c/Le_Loi_statue.jpg"
+    ]
+  },
+  {
+    name: "Thành lập nước Việt Nam Dân chủ Cộng hòa",
+    year: 1945,
+    lat: 21.028,
+    lng: 105.854,
+    period: "Hiện đại",
+    region: "Bắc",
+    description: "Hồ Chí Minh đọc Tuyên ngôn độc lập.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3b/Hồ_Chí_Minh_đọc_Tuyên_ngôn_độc_lập.jpg"
+    ]
+  },
+  {
+    name: "Lễ hội đền Hùng",
+    year: 2012,
+    lat: 21.33,
+    lng: 105.19,
+    period: "Hiện đại",
+    region: "Bắc",
+    description: "Di sản văn hóa phi vật thể của nhân loại.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/HungKingsTempleFestival.jpg"
+    ]
+  },
+
+  // Miền Trung
+  {
+    name: "Thành nhà Hồ",
+    year: 1397,
+    lat: 20.0786,
+    lng: 105.6036,
+    period: "Hồ",
+    region: "Trung",
+    description: "Di tích thành đá cổ thời nhà Hồ, được UNESCO công nhận.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/1/1e/Thành_Nhà_Hồ.JPG"
+    ]
+  },
+  {
+    name: "Thành Cổ Quảng Trị",
+    year: 1972,
+    lat: 16.7667,
+    lng: 107.0833,
+    period: "Hiện đại",
+    region: "Trung",
+    description: "Biểu tượng của cuộc chiến tranh Việt Nam.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/5/5c/Quang_Tri_Citadel.jpg"
+    ]
+  },
+  {
+    name: "Động Phong Nha – Di tích văn hóa",
+    year: 2003,
+    lat: 17.5374,
+    lng: 106.1458,
+    period: "Hiện đại",
+    region: "Trung",
+    description: "Phong Nha – Kẻ Bàng được UNESCO công nhận là Di sản thiên nhiên thế giới.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/2/2e/Phong_Nha_Cave_Quang_Binh.jpg"
+    ]
+  },
+
+  // Miền Nam
+  {
+    name: "Địa đạo Củ Chi",
+    year: 1960,
+    lat: 11.1471,
+    lng: 106.4994,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Mạng lưới địa đạo thời kháng chiến chống Mỹ, biểu tượng cho chiến tranh du kích.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/f/fb/CuChi_Tunnels.jpg"
+    ]
+  },
+  {
+    name: "Chiến dịch Hồ Chí Minh",
+    year: 1975,
+    lat: 10.776,
+    lng: 106.695,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Quân Giải phóng tiến vào Sài Gòn.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/vi/9/9c/BuiQuangThan.jpg"
+    ]
+  },
+  {
+    name: "Dinh Độc Lập (Hội trường Thống Nhất)",
+    year: 1975,
+    lat: 10.7769,
+    lng: 106.6958,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Biểu tượng của ngày thống nhất đất nước 30/4/1975.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/38/Reunification_Palace.jpg"
+    ]
+  },
+  {
+    name: "Chợ Bến Thành",
+    year: 1914,
+    lat: 10.7722,
+    lng: 106.6983,
+    period: "Pháp thuộc",
+    region: "Nam",
+    description: "Một trong những biểu tượng lâu đời của TP. Hồ Chí Minh.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/67/Ben_Thanh_Market.jpg"
+    ]
+  },
+  {
+  name: "Hội An – Di sản văn hóa thế giới",
+  year: 1999,
+  lat: 15.8794,
+  lng: 108.335,
+  period: "Hiện đại",
+  region: "Trung",
+  description: "Phố cổ Hội An được UNESCO công nhận là Di sản văn hóa thế giới.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/3/32/HoiAnAncientTown.jpg"
+  ]
+},
+{
+  name: "Thánh địa Mỹ Sơn",
+  year: 700,
+  lat: 15.765,
+  lng: 108.117,
+  period: "Hiện đại",
+  region: "Trung",
+  description: "Di tích Chăm Pa quan trọng được UNESCO công nhận.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/2/2a/My_Son_Champa.jpg"
+  ]
+},
+{
+  name: "Cố đô Huế",
+  year: 1802,
+  lat: 16.4637,
+  lng: 107.5909,
+  period: "Nguyễn",
+  region: "Trung",
+  description: "Kinh đô của triều Nguyễn, Di sản văn hóa thế giới.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/5/5e/Citadel_of_Hue.jpg"
+  ]
+},
+{
+  name: "Bến Nhà Rồng",
+  year: 1911,
+  lat: 10.762913,
+  lng: 106.705185,
+  period: "Hiện đại",
+  region: "Nam",
+  description: "Nơi Bác Hồ ra đi tìm đường cứu nước.",
+  images: [
+  "/images/bencang.png",
+    "/images/home.png",
+    "/images/baotang.png" 
+  ]
+}
+
+];
+  var markerGroup = L.layerGroup().addTo(map);
+  var allMarkers = [];
+
+  data.forEach(event => {
+    var pc = `<div style="max-width:300px;">
+                <b>${event.name}</b><br><i>${event.period} — ${event.year}</i><br>
+                <p>${event.description}</p>`;
+    if (event.images?.length){
+      pc += '<div class="popup-gallery">';
+      event.images.forEach((img,i)=>{
+        pc += `<a href="trainghiem.html?name=${encodeURIComponent(event.name)}">
+         <img src="${img}" alt="${event.name} ảnh ${i+1}">
+       </a>`;
+
+      });
+      pc += '</div>';
+    }
+    if (event.video){
+      pc += `<iframe width="100%" height="200" src="${event.video}" frameborder="0" allowfullscreen></iframe>`;
+    }
+    pc += '</div>';
+
+    var m = L.marker([event.lat, event.lng], {
+      icon: icons[event.period] || icons["Hiện đại"]
+    }).bindPopup(pc);
+
+    m.eventData = event;
+    allMarkers.push(m);
+    markerGroup.addLayer(m);
+  });
+
+  function applyFilters(){
+    var selP = Array.from(document.querySelectorAll('.period-filter:checked')).map(cb=>cb.value);
+    var selR = Array.from(document.querySelectorAll('.region-filter:checked')).map(cb=>cb.value);
+    var maxY = +document.getElementById('yearRange').value;
+    document.getElementById('yearValue').textContent = maxY;
+
+    markerGroup.clearLayers();
+    allMarkers.forEach(m=>{
+      const e = m.eventData;
+      if (selP.includes(e.period) && selR.includes(e.region) && e.year <= maxY){
+        markerGroup.addLayer(m);
+      }
+    });
+  }
+
+  document.querySelectorAll('.period-filter, .region-filter')
+    .forEach(cb=>cb.addEventListener('change', applyFilters));
+  document.getElementById('yearRange').addEventListener('input', applyFilters);
+  applyFilters();
+</script>
+    <h2>Khám phá lịch sử Việt Nam qua hình ảnh tương tác, từ các triều đại Lý, Trần, Nguyễn đến hiện đại. Mỗi bức ảnh đều mang trong mình câu chuyện và giá trị văn hóa độc đáo.</h2>
+    <div class="gallery">
+      <div id="image-controls" style="margin: 0 auto 20px; max-width: 1200px; padding: 15px; background: #dc8154; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+  <div>
+    <strong>Thời kỳ:</strong>
+    <label><input type="checkbox" class="img-period-filter" value="Lý" checked> Lý</label>
+    <label><input type="checkbox" class="img-period-filter" value="Trần" checked> Trần</label>
+    <label><input type="checkbox" class="img-period-filter" value="Nguyễn" checked> Nguyễn</label>
+    <label><input type="checkbox" class="img-period-filter" value="Hiện đại" checked> Hiện đại</label>
+    <label><input type="checkbox" class="img-period-filter" value="Pháp thuộc" checked> Pháp thuộc</label>
+    <label><input type="checkbox" class="img-period-filter" value="Hồ" checked> Hồ</label>
+  </div>
+  <div>
+    <strong>Vùng miền:</strong>
+    <label><input type="checkbox" class="img-region-filter" value="Bắc" checked> Bắc</label>
+    <label><input type="checkbox" class="img-region-filter" value="Trung" checked> Trung</label>
+    <label><input type="checkbox" class="img-region-filter" value="Nam" checked> Nam</label>
+  </div>
+  <div style="flex:1; display:flex; align-items:center; gap:8px;">
+    <strong>Năm ≤ </strong><span id="imgYearValue">2024</span>
+    <input type="range" id="imgYearRange" min="700" max="2024" value="2024" step="1">
+  </div>
+</div>
+  <div class="gallery-item"
+     data-period="Lý, Hồ"  
+     data-region="Bắc"
+     data-year="1010">
+    <img src="images/hoankiem.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item" 
+     data-period="Trần"  
+     data-region="Trung,Nam"
+     data-year="1010">
+    <img src="images/diadao.png" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+     
+    <div class="gallery-item"
+     data-period="Hồ"  
+     data-region="Nam"
+     data-year="1010">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý"  
+     data-region="Bắc,Trung,Nam"
+     data-year="1010">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+      data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+     <div class="gallery-item"
+      data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/hoankiem.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/diadao.png" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+     <div class="gallery-item"
+      data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    <div class="gallery-item"
+     data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/giamdoc.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam. Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+  </div>
+  <div class="gallery-item"
+   data-period="Lý,Trần,Nguyễn,Hiện đại"  
+     data-region="Bắc,Trung,Nam">
+    <img src="images/ceo.jpg" alt="Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.">
+      <a href="images/hoankiem.jpg" download class="download-btn" title="Tải xuống ảnh">⬇</a>
+    <div class="caption">
+      Hoàng thành Thăng Long – Di tích lịch sử nổi bật, trung tâm quyền lực suốt nhiều triều đại Việt Nam.
+    </div>
+    </div>
+    </div>
+  </main>
+<!-- Giới thiệu về công ty -->
+<section id="lienhe"
+    style="background-color: #2b1d11; color: #ccc2a3; padding: 20px; text-align: left;">
+    <div class="container" style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 40px;">
+        <!-- Cột trái: Thông tin công ty -->
+        <div class="left-info" style="flex: 1; min-width: 300px;">
+            <h2 style="font-size: 36px; font-weight: bold; color: #ffd700; letter-spacing: 1px;">GIỚI THIỆU VỀ CHÚNG TÔI
+            </h2>
+            <p style="font-size: 17px; margin-top: 10px;">TRIỂN LÃM NGHỆ THUẬT LỊCH SỬ</p>
+
+            <h3 style="color: #fcd34d; font-weight: 600;">CÔNG TY TNHH MT4</h3>
+            <p>Xây dựng một website trải nghiệm nghệ thuật AI tương tác, kể chuyện lịch sử Việt Nam thông qua tranh ảnh, giúp lan tỏa giá trị văn hóa và tạo cộng đồng người dùng sáng tạo.
+            </p>
+
+            <p><span style="color: #ff3366;">📞 Hotline:</span><br>0399.148.815
+            </p>
+
+            <p><span style="color: #ff3366;">🐀𐃍𘄐ịa chỉ:</span><br>26 đường số 23, Bình Trưng Đông, Quận 2, Thành phố Hồ Chí Minh
+            </p>
+
+            <a href="tel:0989015151"
+                style="display: inline-block; margin-top: 16px; padding: 12px 28px; font-weight: bold; border: 2px solid darkred; color: white; border-radius: 10px; background-color: red; box-shadow: 0 6px 15px rgba(255, 0, 0, 0.3); transition: 0.3s; text-decoration: none;">
+                LIÊN HỆ NGAY
+            </a>
+        </div>
+        <!-- Cột phải: Google Map -->
+        <div class="right-map" style="flex: 1; min-width: 300px;">
+            <h4 style="color: #ffd700; margin-bottom: 15px;">📌 Vị trí công ty trên bản đồ</h4>
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.3834968450287!2d106.77465077769249!3d10.787729861931647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526830098c2e3%3A0xcffb6043db6d123b!2zMjYgxJDGsOG7nW5nIHPhu5EgMjMsIELDrG5oIFRyxrBuZyDEkMO0bmcsIFRo4bunIMSQ4bupYywgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e1!3m2!1svi!2s!4v1751130688952!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    const imageYearRange = document.getElementById('imgYearRange');
+    const imageYearValue = document.getElementById('imgYearValue');
+
+    function applyImageFilters() {
+      const selPeriods = Array.from(document.querySelectorAll('.img-period-filter:checked')).map(cb => cb.value);
+      const selRegions = Array.from(document.querySelectorAll('.img-region-filter:checked')).map(cb => cb.value);
+      const year = parseInt(imageYearRange.value);
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        const itemPeriods = (item.dataset.period || '').split(',').map(p => p.trim());
+        const itemRegions = (item.dataset.region || '').split(',').map(r => r.trim());
+        const itemYear = parseInt(item.dataset.year || '2024');
+
+        const matchPeriod = selPeriods.some(p => itemPeriods.includes(p));
+        const matchRegion = selRegions.some(r => itemRegions.includes(r));
+        const matchYear = itemYear <= year;
+
+        item.style.display = (matchPeriod && matchRegion && matchYear) ? '' : 'none';
+      });
+    }
+
+    imageYearRange.addEventListener('input', () => {
+      imageYearValue.textContent = imageYearRange.value;
+      applyImageFilters();
+    });
+
+    document.querySelectorAll('.img-period-filter, .img-region-filter')
+      .forEach(cb => cb.addEventListener('change', applyImageFilters));
+
+    // Tự động lọc theo ?name=...
+    function scrollToImageByName() {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('name');
+      if (name) {
+        const decodedName = decodeURIComponent(name);
+        const target = Array.from(document.querySelectorAll('.gallery-item'))
+          .find(div => (div.dataset.name || '').toLowerCase() === decodedName.toLowerCase());
+        if (target) {
+          applyImageFilters();
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.style.outline = '3px solid yellow';
+          setTimeout(() => target.style.outline = '', 2000);
+        }
+      } else {
+        applyImageFilters();
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', scrollToImageByName);
+
+    data.forEach(item => {
+  const imagesHtml = item.images.map(img => `<img src="${img}" alt="${item.name}" />`).join('');
+
+  const popupContent = `
+    <strong>${item.name}</strong><br />
+    <em>${item.period} — ${item.year}</em><br />
+    <p>${item.description}</p>
+    <div class="popup-gallery">${imagesHtml}</div>
+  `;
+
+  L.marker([item.lat, item.lng])
+    .addTo(map)
+    .bindPopup(popupContent);
+});
+
+  </script>
+
+
+
+  <footer>
+    <p>&copy; 2023 Trải nghiệm Hình ảnh AI. Tất cả quyền được bảo lưu.</p>
+  </footer>
+
+</body>
+</html>

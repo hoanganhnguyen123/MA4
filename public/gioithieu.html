@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giới thiệu về MT4</title>
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.4s ease-in-out;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+
+    h2 {
+      color: var(--btn-hover);
+
+      margin-top: 2rem;
+    }
+
+    p, li {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    .highlight {
+      color: var(--btn-bg);
+      font-weight: bold;
+    }
+
+    .map-image {
+      width: 100%;
+      border-radius: 12px;
+      margin: 2rem 0;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .team-section {
+      margin-top: 4rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    .member {
+      background: var(--bg-card);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .member img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+
+    .member h4 {
+      margin: 0.5rem 0 0.25rem;
+      color: var(--btn-bg);
+    }
+
+    .member-details {
+      display: none;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .member.active .member-details {
+      display: block;
+    }
+    .banner-image {
+  width: 100%;
+  height: 300px; /* hoặc đặt height cụ thể nếu muốn */
+  display: block;
+  object-fit: cover; /* Giúp ảnh đẹp hơn nếu đặt chiều cao cố định */
+}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+      </ul>
+    </nav>
+  </header>
+      <img src="images/LOGOGT.png" alt="Ảnh giới thiệu" class="banner-image" />
+  <div class="container">
+    <h2>🧭 Giới thiệu tổng quan</h2>
+    <p>Dự án "Nghệ Thuật Ký Ức 4.0" là một sáng kiến sáng tạo kết hợp nghệ thuật truyền thống với công nghệ hiện đại, đặc biệt là trí tuệ nhân tạo (AI). Thông qua nền tảng số, dự án tái hiện các di sản văn hóa Việt Nam dưới góc nhìn mới mẻ, sinh động, giúp công chúng tiếp cận các giá trị văn hóa một cách gần gũi và hấp dẫn hơn.</p>
+
+    <h2>🎯 Sứ mệnh</h2>
+    <p>Sứ mệnh của "Nghệ Thuật Ký Ức 4.0" là:</p>
+    <p>MT4 hướng đến việc truyền cảm hứng khám phá di sản qua công nghệ. Chúng tôi tạo ra các công cụ hỗ trợ học tập, triển lãm số, và giao diện tương tác sử dụng AI để mọi người dễ dàng tiếp cận và cảm nhận lịch sử Việt Nam một cách sống động.</p>
+    <li>Bảo tồn và tái hiện ký ức văn hóa dân tộc bằng công nghệ AI và kỹ thuật số.</li>
+    <li>Tạo ra trải nghiệm nghệ thuật số sống động, giúp người xem không chỉ "thấy" mà còn "cảm" được chiều sâu văn hóa.</li>
+    <li>Nâng cao nhận thức cộng đồng về tầm quan trọng của việc giữ gìn và phát huy di sản văn hóa.</li>
+    <li>Truyền cảm hứng cho thế hệ trẻ, để họ trân trọng và tiếp nối những giá trị truyền thống quý báu.</li>
+
+    <h2>👁️‍🗨️ Tầm nhìn</h2>
+    <p>Dự án hướng đến việc trở thành cầu nối giữa quá khứ và hiện tại, tạo nên một không gian nghệ thuật kỹ thuật số nơi di sản văn hóa truyền thống được truyền tải bằng ngôn ngữ công nghệ. Đây là một bước tiến nhằm đưa văn hóa dân tộc đến gần hơn với thế hệ trẻ, lan tỏa giá trị truyền thống đến cộng đồng toàn cầu thông qua trải nghiệm tương tác hiện đại.</p>
+
+    <h2>Dự án tiêu biểu</h2>
+    <ul>
+      <li>Tranh AI Huế – Tái hiện tranh cổ từ dữ liệu lịch sử.</li>
+      <li>Giọng nói nhân tạo tại di tích – Ứng dụng AI thuyết minh tự động.</li>
+      <li>Triển lãm thực tế ảo – Xây dựng không gian bảo tàng số.</li>
+      <li>Giáo dục tương tác – Hợp tác với các trường học để tích hợp trải nghiệm số hóa vào bài học.</li>
+    </ul>
+
+    <h2>Hình ảnh Công ty</h2>
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="images/videogt.mp4" type="video/mp4">
+    <div class="team-section">
+      <h2>Thành viên đội ngũ / Nhà sáng lập</h2>
+      <div class="team-grid">
+        <div class="member" onclick="toggleDetails(this)">
+          <img src="images/ceo.jpg" alt="Nguyen Van Anh">
+          <h4>Nguyễn Hoàng Anh</h4>
+          <u1>Nhà sáng lập & CEO. Chuyên gia AI và bảo tồn văn hóa</u1>
+        </div>
+        <div class="member" onclick="toggleDetails(this)">
+          <img src="images/giamdoc.jpg" alt="Tran Thi B">
+          <h4>Dương Trang Thảo Nguyên</h4>
+          <u1>Giám đốc kỹ thuật. Dẫn đầu các dự án AI & AR/VR</u1>
+        </div>
+        <div class="member" onclick="toggleDetails(this)">
+          <img src="images/thietke.jpg" alt="Le Van C">
+          <h4>Lê Văn Bảnh</h4>
+          <u1>Thiết kế UX/UI. Xây dựng trải nghiệm triển lãm số</u1>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Giới thiệu về công ty -->
+<section id="lienhe"
+    style="background-color: #2b1d11; color: #ccc2a3; padding: 20px; text-align: left;">
+    <div class="container" style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 40px;">
+        <!-- Cột trái: Thông tin công ty -->
+        <div class="left-info" style="flex: 1; min-width: 300px;">
+            <h2 style="font-size: 36px; font-weight: bold; color: #ffd700; letter-spacing: 1px;">GIỚI THIỆU VỀ CHÚNG TÔI
+            </h2>
+            <p style="font-size: 17px; margin-top: 10px;">TRIỂN LÃM NGHỆ THUẬT LỊCH SỬ</p>
+
+            <h3 style="color: #fcd34d; font-weight: 600;">CÔNG TY TNHH MT4</h3>
+            <p>Xây dựng một website trải nghiệm nghệ thuật AI tương tác, kể chuyện lịch sử Việt Nam thông qua tranh ảnh, giúp lan tỏa giá trị văn hóa và tạo cộng đồng người dùng sáng tạo.
+            </p>
+
+            <p><span style="color: #ff3366;">📞 Hotline:</span><br>0399.148.815
+            </p>
+
+            <p><span style="color: #ff3366;">🐀𐃍𘄐ịa chỉ:</span><br>26 đường số 23, Bình Trưng Đông, Quận 2, Thành phố Hồ Chí Minh
+            </p>
+
+            <a href="tel:0989015151"
+                style="display: inline-block; margin-top: 16px; padding: 12px 28px; font-weight: bold; border: 2px solid darkred; color: white; border-radius: 10px; background-color: red; box-shadow: 0 6px 15px rgba(255, 0, 0, 0.3); transition: 0.3s; text-decoration: none;">
+                LIÊN HỆ NGAY
+            </a>
+        </div>
+        <!-- Cột phải: Google Map -->
+        <div class="right-map" style="flex: 1; min-width: 300px;">
+            <h4 style="color: #ffd700; margin-bottom: 15px;">📌 Vị trí công ty trên bản đồ</h4>
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.3834968450287!2d106.77465077769249!3d10.787729861931647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526830098c2e3%3A0xcffb6043db6d123b!2zMjYgxJDGsOG7nW5nIHPhu5EgMjMsIELDrG5oIFRyxrBuZyDEkMO0bmcsIFRo4bunIMSQ4bupYywgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e1!3m2!1svi!2s!4v1751130688952!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+  <script>
+    function toggleDetails(el) {
+      el.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

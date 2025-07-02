@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tạo tranh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    h2 {
+      color: var(--btn-hover);
+    }
+
+    .ai-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .ai-card {
+  background: linear-gradient(to bottom right, #f4e3c1, #e9d8b7); /* màu giấy cổ */
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border: 4px double #8b5e3c; /* viền kiểu cổ điển */
+  font-family: 'Georgia', serif;
+  color: #3c2f1c;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+
+.ai-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* hiệu ứng giấy */
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ai-card * {
+  position: relative;
+  z-index: 1;
+}
+.ai-card a {
+  display: inline-block;
+  background-color: #8b5e3c;
+  color: #fff1d0;
+  padding: 10px 18px;
+  border: 2px solid #4d3425;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+}
+
+.ai-card a:hover {
+  background-color: #a1724f;
+  transform: scale(1.05);
+}
+
+
+    .upload-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-top: 3rem;
+      padding: 2rem;
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      flex-wrap: wrap;
+    }
+
+    .upload-form {
+      flex: 1;
+      text-align: left;
+    }
+
+    .upload-form h3 {
+      margin-bottom: 1rem;
+    }
+
+    .upload-form input[type="file"] {
+      margin: 1rem 0;
+      display: block;
+    }
+
+    .upload-form button {
+      background-color: var(--btn-bg);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color var(--transition);
+      margin-right: 1rem;
+    }
+
+    .upload-form button:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .preview-box {
+      flex: 1;
+      background-color: #2e1e10;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .preview-box img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+    p {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Tạo tác phẩm nghệ thuật với AI</h2>
+    <p>Khám phá các nền tảng trí tuệ nhân tạo để tạo tranh và video nghệ thuật độc đáo.</p>
+
+    <div class="ai-links">
+ <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);" href="https://www.bing.com/images/create" target="_blank">Bing Image Creator</a>
+        <p>Tạo ảnh từ mô tả văn bản với công nghệ DALL·E 3.</p>
+      </div>
+
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3); "href="https://www.artbreeder.com/" target="_blank">Artbreeder</a>
+        <p>Biến đổi khuôn mặt, phong cảnh và kết hợp ảnh nghệ thuật.</p>
+      </div>
+
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3); "href="https://www.runwayml.com/" target="_blank">Runway ML</a>
+        <p>Tạo video AI từ ảnh và mô tả, dựng cảnh động phong cách điện ảnh.</p>
+      </div>
+
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.pika.art/" target="_blank">Pika Labs</a>
+        <p>Tạo video AI ngắn từ mô tả văn bản cực kỳ sống động.</p>
+      </div>
+
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://huggingface.co/spaces/stabilityai/stable-diffusion" target="_blank">Stable Diffusion</a>
+        <p>Công cụ mã nguồn mở để tạo ảnh nghệ thuật từ mô tả.</p>
+      </div>
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://deepdreamgenerator.com/" target="_blank">Deep Dream Generator</a>
+        <p>Tạo ảnh nghệ thuật từ ảnh gốc bằng công nghệ Deep Dream.</p>
+    </div>
+<div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.midjourney.com/" target="_blank">Midjourney</a>
+        <p>Tạo ảnh nghệ thuật từ mô tả văn bản với phong cách độc đáo.</p>
+      </div>
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.dreambywombo.com/" target="_blank">Dream by Wombo</a>
+        <p>Tạo tranh nghệ thuật từ mô tả văn bản với nhiều phong cách khác nhau.</p>  
+      </div>
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.pixray.gob.io/" target="_blank">Pixray</a>
+        <p>Công cụ tạo ảnh nghệ thuật từ mô tả văn bản với nhiều tùy chọn.</p>  
+      </div>
+      <div class="ai-card">
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.nightcafe.studio/" target="_blank">NightCafe Studio</a>
+        <p>Tạo tranh nghệ thuật từ mô tả văn bản với nhiều phong cách khác nhau.</p>
+      </div>
+      <div class="ai-card"> 
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.fotor.com/features/text-to-image/" target="_blank">Fotor</a>
+        <p>Tạo ảnh nghệ thuật từ mô tả văn bản với nhiều phong cách khác nhau.</p>  
+      </div>
+      <div class="ai-card"> 
+        <a style="background-color: rgb(92, 79, 3);"href="https://www.canva.com/features/text-to-image/" target="_blank">Canva</a>
+        <p>Tạo ảnh nghệ thuật từ mô tả văn bản với nhiều phong cách khác nhau.</p>  
+      </div>
+        </div>
+
+    <div class="upload-section">
+      <div class="upload-form">
+        <h3>Tải lên nhiều ảnh</h3>
+        <form id="uploadForm">
+          <input type="file" name="images" id="imageInput" accept="image/*" multiple required />
+          <button type="submit">Tải lên</button>
+          <button type="button" id="clearBtn">Xóa tất cả</button>
+        </form>
+        <div class="status" id="status">Chưa có tệp nào được chọn.</div>
+      </div>
+
+      <div class="preview-box" id="previewBox">
+        <p><strong>Ảnh xem trước:</strong></p>
+        <div id="previewContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const imageInput = document.getElementById("imageInput");
+    const previewContainer = document.getElementById("previewContainer");
+    const statusText = document.getElementById("status");
+    const clearBtn = document.getElementById("clearBtn");
+
+    document.getElementById("uploadForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const files = imageInput.files;
+
+      if (!files.length) {
+        statusText.textContent = "Vui lòng chọn ít nhất một ảnh!";
+        return;
+      }
+
+      previewContainer.innerHTML = "";
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          img.style.margin = "10px 0";
+          img.style.maxWidth = "100%";
+          previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      statusText.textContent = "Tải lên thành công!";
+    });
+
+    clearBtn.addEventListener("click", () => {
+      imageInput.value = "";
+      previewContainer.innerHTML = "";
+      statusText.textContent = "Đã xóa tất cả ảnh.";
+    });
+  </script>
+  <!-- Giới thiệu về công ty -->
+<section id="lienhe"
+    style="background-color: #2b1d11; color: #ccc2a3; padding: 20px; text-align: left;">
+    <div class="container" style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 40px;">
+        <!-- Cột trái: Thông tin công ty -->
+        <div class="left-info" style="flex: 1; min-width: 300px;">
+            <h2 style="font-size: 36px; font-weight: bold; color: #ffd700; letter-spacing: 1px;">GIỚI THIỆU VỀ CHÚNG TÔI
+            </h2>
+            <p style="font-size: 17px; margin-top: 10px;">TRIỂN LÃM NGHỆ THUẬT LỊCH SỬ</p>
+
+            <h3 style="color: #fcd34d; font-weight: 600;">CÔNG TY TNHH MT4</h3>
+            <p>Xây dựng một website trải nghiệm nghệ thuật AI tương tác, kể chuyện lịch sử Việt Nam thông qua tranh ảnh, giúp lan tỏa giá trị văn hóa và tạo cộng đồng người dùng sáng tạo.
+            </p>
+
+            <p><span style="color: #ff3366;">📞 Hotline:</span><br>0399.148.815
+            </p>
+
+            <p><span style="color: #ff3366;">🐀𐃍𘄐ịa chỉ:</span><br>26 đường số 23, Bình Trưng Đông, Quận 2, Thành phố Hồ Chí Minh
+            </p>
+
+            <a href="tel:0989015151"
+                style="display: inline-block; margin-top: 16px; padding: 12px 28px; font-weight: bold; border: 2px solid darkred; color: white; border-radius: 10px; background-color: red; box-shadow: 0 6px 15px rgba(255, 0, 0, 0.3); transition: 0.3s; text-decoration: none;">
+                LIÊN HỆ NGAY
+            </a>
+        </div>
+        <!-- Cột phải: Google Map -->
+        <div class="right-map" style="flex: 1; min-width: 300px;">
+            <h4 style="color: #ffd700; margin-bottom: 15px;">📌 Vị trí công ty trên bản đồ</h4>
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.3834968450287!2d106.77465077769249!3d10.787729861931647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526830098c2e3%3A0xcffb6043db6d123b!2zMjYgxJDGsOG7nW5nIHPhu5EgMjMsIELDrG5oIFRyxrBuZyDEkMO0bmcsIFRo4bunIMSQ4bupYywgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e1!3m2!1svi!2s!4v1751130688952!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giáo dục - Triển lãm AI & Di tích Việt Nam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --highlight: #f5d452;
+      --transition: 0.3s ease-in-out;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      scroll-behavior: smooth;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.75rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header img.logo { height: 40px; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+    nav a:hover { color: var(--btn-hover); }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    h2 {
+      color: var(--highlight);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .description {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+    .edu-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .edu-card {
+      background-color: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .edu-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+    }
+    .edu-card h3 {
+      margin-top: 0;
+      color: var(--btn-bg);
+      font-size: 1.4rem;
+    }
+    .edu-card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin: 0.5rem 0 1.5rem;
+    }
+    .btn {
+      background: var(--btn-bg);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      color: #000;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      transform: scale(0);
+      opacity: 0;
+      pointer-events: none;
+      animation: ripple 0.6s linear;
+    }
+    @keyframes ripple {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+    .btn:hover { background: var(--btn-hover); }
+
+    .timeline-nav {
+      background: #fdf7ed;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .timeline-nav h2 {
+      font-family: 'Playfair Display', serif;
+      color: #8b0000;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    .timeline-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    .timeline-buttons button {
+      background-color: #8b0000;
+      color: #fff1c7;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .timeline-buttons button:hover { background-color: #a61b1b; }
+
+    .milestone-section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
+    }
+    .milestone-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .milestone-section img {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .feature-section {
+      background: #2e1e10;
+      color: var(--text-light);
+      padding: 3rem 1rem;
+      margin-top: 3rem;
+    }
+    .feature-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--highlight);
+    }
+    .feature-section ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+    .feature-section li {
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Khám phá Giáo dục cùng AI & Văn hóa Việt</h2>
+    <p class="description">Tìm hiểu cách công nghệ AI kết hợp với lịch sử và di sản để tạo nên phương pháp học tập mới mẻ, truyền cảm hứng cho học sinh và giáo viên.</p>
+
+    <div class="edu-section">
+      <div class="edu-card">
+        <h3>🎓 Bài học tương tác</h3>
+        <p>Tham gia các hoạt động học tập kết hợp công nghệ và lịch sử.</p>
+        <a href="baihoc.html" class="btn">Xem bài học</a>
+      </div>
+      <div class="edu-card">
+        <h3>🎥 Video hướng dẫn</h3>
+        <p>Khám phá video sinh động giúp tiếp cận AI qua góc nhìn văn hóa.</p>
+        <button class="btn">Xem video</button>
+      </div>
+      <div class="edu-card">
+        <h3>📚 Tài liệu cho giáo viên</h3>
+        <p>Tải xuống giáo án, hướng dẫn và nội dung giáo dục tích hợp AI.</p>
+        <button class="btn">Tải tài liệu</button>
+      </div>
+    </div>
+
+    <div class="feature-section">
+      <h3>💡 Tính năng nổi bật</h3>
+      <ul>
+        <li>🔍 Tìm kiếm bài học theo chủ đề</li>
+        <li>👥 Thảo luận trong nhóm học</li>
+        <li>📊 Theo dõi tiến trình học tập cá nhân</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Triển lãm AI & Di tích Việt Nam. Một dự án giáo dục sáng tạo.
+  </footer>
+  <script>
+    const sections = document.querySelectorAll('.milestone-section');
+    const options = { threshold: 0.1 };
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, options);
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+    document.querySelectorAll('.timeline-buttons button').forEach(button => {
+      button.addEventListener('click', function() {
+        const target = this.getAttribute('data-target');
+        document.querySelectorAll('.milestone-section').forEach(section => {
+          section.classList.remove('visible');
+          if (section.id === target) {
+            section.classList.add('visible');
+          }
+        });
+      });
+    });
+  </script>
+  
+</body>
+</html>
+<!-- <section class="banner">
+ -->    

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài học tương tác</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+     :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      text-align: center;
+      overflow: hidden;
+        background: url('images/hero-bg.jpg') no-repeat center center/cover;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .toolbar select, .toolbar input {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      margin: 0.5rem;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .lesson-card {
+      background-color: var(--bg-card);
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s forwards;
+    }
+    .lesson-card img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      height: 180px;
+      object-fit: cover;
+    }
+    .lesson-card h2 {
+      font-size: 1.4rem;
+      color: var(--btn-bg);
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .lesson-card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    h1 {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #f5d452;
+  margin: 2rem 0;
+}
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      background-color: var(--btn-bg);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color var(--transition);
+    }
+    .btn:hover { background-color: var(--btn-hover); }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+        <li id="auth-link"><a href="dangnhap.html">Đăng nhập</a></li>
+      </ul>
+    </nav>
+  </header>
+<h1 style="text-align: center;">Bài học tương tác về Di tích lịch sử Việt Nam</h1>
+  <div class="toolbar">
+    <select id="filter">
+      <option value="all">Tất cả chủ đề</option>
+      <option value="lichsu">Lịch sử</option>
+      <option value="kientruc">Kiến trúc</option>
+      <option value="tongiao">Tôn giáo</option>
+    </select>
+    <input type="text" id="search" placeholder="Tìm bài học...">
+  </div>
+  <main>
+    <section class="lesson-grid" id="lessonGrid">
+      <article class="lesson-card" data-topic="lichsu">
+        <img src="images/vanmieu.jpg" alt="Văn Miếu">
+        <h2>Văn Miếu - Quốc Tử Giám</h2>
+        <p>Khám phá nền giáo dục thời phong kiến tại Văn Miếu.</p>
+        <a href="baihoc-vanmieu.html" class="btn">Xem chi tiết</a>
+      </article>
+      <article class="lesson-card" data-topic="lichsu">
+        <img src="images/hoangthanh.jpg" alt="Hoàng thành">
+        <h2>Hoàng thành Thăng Long</h2>
+        <p>Tìm hiểu trung tâm quyền lực các triều đại Việt.</p>
+        <a href="baihoc-hoangthanh.html" class="btn">Xem chi tiết</a>
+      </article>
+      <article class="lesson-card" data-topic="tongiao">
+        <img src="images/chuamotcot.jpg" alt="Chùa Một Cột">
+        <h2>Chùa Một Cột</h2>
+        <p>Khám phá kiến trúc độc đáo và ý nghĩa tâm linh.</p>
+        <a href="baihoc-chuamotcot.html" class="btn">Xem chi tiết</a>
+      </article>
+        <article class="lesson-card" data-topic="kientruc">
+            <img src="images/templeofliterature.jpg" alt="Văn Miếu">
+            <h2>Văn Miếu - Quốc Tử Giám</h2>
+            <p>Trung tâm giáo dục và văn hóa của Việt Nam.</p>
+            <a href="baihoc-vanmieu.html" class="btn">Xem chi tiết</a>
+        </article>
+        <article class="lesson-card" data-topic="kientruc"> 
+            <img src="images/hoangthanh.jpg" alt="Hoàng thành Thăng Long">
+            <h2>Hoàng thành Thăng Long</h2>
+            <p>Khám phá lịch sử và kiến trúc của Hoàng thành.</p>
+            <a href="baihoc-hoangthanh.html" class="btn">Xem chi tiết</a>   
+        </article>
+        <article class="lesson-card" data-topic="tongiao">  
+            <img src="images/chuamotcot.jpg" alt="Chùa Một Cột">
+            <h2>Chùa Một Cột</h2>
+            <p>Khám phá kiến trúc độc đáo và ý nghĩa tâm linh.</p>
+            <a href="baihoc-chuamotcot.html" class="btn">Xem chi tiết</a>
+        </article>
+        <article class="lesson-card" data-topic="lichsu">           
+            <img src="images/templeofliterature.jpg" alt="Văn Miếu">
+            <h2>Văn Miếu - Quốc Tử Giám</h2>
+            <p>Trung tâm giáo dục và văn hóa của Việt Nam.</p>
+            <a href="baihoc-vanmieu.html" class="btn">Xem chi tiết</a>  
+        </article>
+        <article class="lesson-card" data-topic="kientruc">
+            <img src="images/hoangthanh.jpg" alt="Hoàng thành Thăng Long">
+            <h2>Hoàng thành Thăng Long</h2>
+            <p>Khám phá lịch sử và kiến trúc của Hoàng thành.</p>
+            <a href="baihoc-hoangthanh.html" class="btn">Xem chi tiết</a>
+        </article>
+        <article class="lesson-card" data-topic="tongiao">
+            <img src="images/chuamotcot.jpg" alt="Chùa Một Cột">
+            <h2>Chùa Một Cột</h2>
+            <p>Khám phá kiến trúc độc đáo và ý nghĩa tâm linh.</p>
+            <a href="baihoc-chuamotcot.html" class="btn">Xem chi tiết</a>
+        </article>          
+        <article class="lesson-card" data-topic="lichsu">
+            <img src="images/templeofliterature.jpg" alt="Văn Miếu">
+            <h2>Văn Miếu - Quốc Tử Giám</h2>
+            <p>Trung tâm giáo dục và văn hóa của Việt Nam.</p>
+            <a href="baihoc-vanmieu.html" class="btn">Xem chi tiết</a>
+        </article>
+        <article class="lesson-card" data-topic="kientruc"> 
+            <img src="images/hoangthanh.jpg" alt="Hoàng thành Thăng Long">
+            <h2>Hoàng thành Thăng Long</h2>
+            <p>Khám phá lịch sử và kiến trúc của Hoàng thành.</p>
+            <a href="baihoc-hoangthanh.html" class="btn">Xem chi tiết</a>
+        </article>
+        <article class="lesson-card" data-topic="tongiao">  
+            <img src="images/chuamotcot.jpg" alt="Chùa Một Cột">
+            <h2>Chùa Một Cột</h2>
+            <p>Khám phá kiến trúc độc đáo và ý nghĩa tâm linh.</p>
+            <a href="baihoc-chuamotcot.html" class="btn">Xem chi tiết</a>
+        </article>
+      <!-- Thêm các bài học khác tại đây -->
+    </section>
+  </main>
+  <script>
+    const filter = document.getElementById("filter");
+    const search = document.getElementById("search");
+    const cards = document.querySelectorAll(".lesson-card");
+
+    filter.addEventListener("change", () => {
+      const topic = filter.value;
+      cards.forEach(card => {
+        const match = topic === "all" || card.dataset.topic === topic;
+        card.style.display = match ? "block" : "none";
+      });
+    });
+
+    search.addEventListener("input", () => {
+      const term = search.value.toLowerCase();
+      cards.forEach(card => {
+        const title = card.querySelector("h2").textContent.toLowerCase();
+        card.style.display = title.includes(term) ? "block" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
+ 

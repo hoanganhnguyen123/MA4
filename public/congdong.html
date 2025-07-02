@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cộng đồng AI & Di sản</title>
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    .section {
+      padding: 4rem 2rem;
+    }
+
+    .section h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .community-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .community-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .community-card h3 {
+      margin-top: 0;
+      color: var(--btn-bg);
+    }
+
+    .community-card p {
+      color: var(--text-muted);
+    }
+
+    .btn-join {
+      margin-top: 1rem;
+      background: var(--btn-bg);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .btn-join:hover {
+      background: var(--btn-hover);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="section">
+    <h1>Cộng đồng Sáng tạo & Bảo tồn Di sản</h1>
+    <div class="community-grid">
+      <div class="community-card">
+        <h3>Diễn đàn thảo luận</h3>
+        <p>Tham gia vào các chủ đề xoay quanh công nghệ AI và ứng dụng trong văn hóa, di tích Việt Nam.</p>
+        <button class="btn-join">Tham gia</button>
+      </div>
+      <div class="community-card">
+        <h3>Sự kiện cộng đồng</h3>
+        <p>Cập nhật các workshop, hội thảo và triển lãm do cộng đồng tổ chức.</p>
+        <button class="btn-join">Xem lịch</button>
+      </div>
+      <div class="community-card">
+        <h3>Góp ý & Đóng góp</h3>
+        <p>Chia sẻ ý tưởng, phản hồi hoặc tác phẩm của bạn để cùng nhau xây dựng dự án phát triển.</p>
+        <button class="btn-join">Gửi góp ý</button>
+      </div>
+      <div class="community-card">
+        <h3>Kết nối thành viên</h3>
+        <p>Tìm kiếm, kết nối và làm việc cùng những người có chung đam mê về AI và văn hóa.</p>
+        <button class="btn-join">Kết nối</button>
+      </div>
+    </div>
+  </section>
+  <script src="js/script.js"></script>
+
+</body>
+</html>

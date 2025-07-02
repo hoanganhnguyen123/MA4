@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Bản đồ lịch sử Việt Nam – Nâng cấp giao diện</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Mapbox CSS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <!-- Leaflet CSS (duy trì để hạ fallback nếu muốn) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0; background: #f0f2f5;
+    }
+    h2 {
+      text-align: center;
+      padding: 1rem 0;
+      color: #333;
+    }
+    #controls {
+      max-width: 1200px;
+      margin: 0 auto 10px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #controls > div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #controls label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    #yearRange {
+      flex: 1;
+    }
+    #map {
+      height: 700px;
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .popup-gallery img {
+      width: 60px;
+      margin: 4px;
+      border-radius: 4px;
+    }
+    iframe {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Bản đồ lịch sử Việt Nam – Giao diện nâng cao</h2>
+
+<div id="controls">
+  <div>
+    <strong>Thời kỳ:</strong>
+    <label><input type="checkbox" class="period-filter" value="Lý" checked> Lý</label>
+    <label><input type="checkbox" class="period-filter" value="Trần" checked> Trần</label>
+    <label><input type="checkbox" class="period-filter" value="Nguyễn" checked> Nguyễn</label>
+    <label><input type="checkbox" class="period-filter" value="Hiện đại" checked> Hiện đại</label>
+    <label><input type="checkbox" class="period-filter" value="Pháp thuộc" checked> Pháp thuộc</label>
+    <label><input type="checkbox" class="period-filter" value="Hồ" checked> Hồ</label>
+  </div>
+  <div>
+    <strong>Vùng miền:</strong>
+    <label><input type="checkbox" class="region-filter" value="Bắc" checked> Bắc</label>
+    <label><input type="checkbox" class="region-filter" value="Trung" checked> Trung</label>
+    <label><input type="checkbox" class="region-filter" value="Nam" checked> Nam</label>
+  </div>
+  <div style="flex:1; display:flex; align-items:center; gap:8px;">
+    <strong>Năm ≤ </strong><span id="yearValue">2024</span>
+    <input type="range" id="yearRange" min="700" max="2024" value="2024" step="1">
+  </div>
+</div>
+
+<div id="map"></div>
+
+<!-- Mapbox GL JS -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Lightbox -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+<script>
+  // Mapbox + Leaflet hybrid – ưu tiên Mapbox
+  var map = L.map('map').setView([15.5, 106], 5.5);
+// CartoDB Positron: nhẹ, đẹp, hiện đại
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+  // Icon theo thời kỳ
+  var icons = {
+    "Lý": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2721/2721150.png", iconSize: [32,32] }),
+    "Trần": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2922/2922506.png", iconSize: [32,32] }),
+    "Nguyễn": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/4140/4140047.png", iconSize: [32,32] }),
+    "Hiện đại": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2620/2620973.png", iconSize: [32,32] }),
+    "Pháp thuộc": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/2242/2242656.png", iconSize: [32,32] }),
+    "Hồ": L.icon({ iconUrl: "https://cdn-icons-png.flaticon.com/512/3418/3418515.png", iconSize: [32,32] })
+  };
+
+  // Dữ liệu...
+ var data = [
+  // Miền Bắc
+  {
+    name: "Chiến thắng Bạch Đằng",
+    year: 938,
+    lat: 20.9,
+    lng: 106.85,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Ngô Quyền đánh tan quân Nam Hán.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/Bach_Dang_938.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Ngô_Quyền.jpg/800px-Ngô_Quyền.jpg"
+    ]
+  },
+  {
+    name: "Kinh đô Hoa Lư",
+    year: 968,
+    lat: 20.255,
+    lng: 105.964,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Đinh Bộ Lĩnh lập nước Đại Cồ Việt.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Hoa_Lu_ancient_capital.jpg"
+    ]
+  },
+  {
+    name: "Thăng Long được thành lập",
+    year: 1010,
+    lat: 21.028,
+    lng: 105.854,
+    period: "Lý",
+    region: "Bắc",
+    description: "Lý Thái Tổ dời đô ra Thăng Long.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/HoangThanhThangLong.jpg"
+    ],
+    video: "https://www.youtube.com/embed/VJHwPaDNttE"
+  },
+  {
+    name: "Chùa Một Cột",
+    year: 1049,
+    lat: 21.0285,
+    lng: 105.8542,
+    period: "Lý",
+    region: "Bắc",
+    description: "Một trong những biểu tượng của Hà Nội.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/One_Pillar_Pagoda.jpg"
+    ]
+  },
+  {
+    name: "Chiến thắng Đông Bộ Đầu",
+    year: 1285,
+    lat: 21.038,
+    lng: 105.875,
+    period: "Trần",
+    region: "Bắc",
+    description: "Trần Hưng Đạo đánh tan quân Nguyên.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/1/1b/Tran_Hung_Dao_statue_HCMC.jpg"
+    ]
+  },
+  {
+    name: "Chiến thắng Bạch Đằng lần thứ 2",
+    year: 1288,
+    lat: 20.9,
+    lng: 106.85,
+    period: "Trần",
+    region: "Bắc",
+    description: "Trần Quốc Tuấn đánh tan quân Nguyên lần thứ hai.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6e/Bach_Dang_1288.jpg"
+    ]
+  },
+  {
+    name: "Chiến thắng Chi Lăng - Xương Giang",
+    year: 1427,
+    lat: 21.3,
+    lng: 106.2,
+    period: "Nguyễn",
+    region: "Bắc",
+    description: "Lê Lợi đánh tan quân Minh.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/4/4c/Le_Loi_statue.jpg"
+    ]
+  },
+  {
+    name: "Thành lập nước Việt Nam Dân chủ Cộng hòa",
+    year: 1945,
+    lat: 21.028,
+    lng: 105.854,
+    period: "Hiện đại",
+    region: "Bắc",
+    description: "Hồ Chí Minh đọc Tuyên ngôn độc lập.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3b/Hồ_Chí_Minh_đọc_Tuyên_ngôn_độc_lập.jpg"
+    ]
+  },
+  {
+    name: "Lễ hội đền Hùng",
+    year: 2012,
+    lat: 21.33,
+    lng: 105.19,
+    period: "Hiện đại",
+    region: "Bắc",
+    description: "Di sản văn hóa phi vật thể của nhân loại.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/HungKingsTempleFestival.jpg"
+    ]
+  },
+
+  // Miền Trung
+  {
+    name: "Thành nhà Hồ",
+    year: 1397,
+    lat: 20.0786,
+    lng: 105.6036,
+    period: "Hồ",
+    region: "Trung",
+    description: "Di tích thành đá cổ thời nhà Hồ, được UNESCO công nhận.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/1/1e/Thành_Nhà_Hồ.JPG"
+    ]
+  },
+  {
+    name: "Thành Cổ Quảng Trị",
+    year: 1972,
+    lat: 16.7667,
+    lng: 107.0833,
+    period: "Hiện đại",
+    region: "Trung",
+    description: "Biểu tượng của cuộc chiến tranh Việt Nam.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/5/5c/Quang_Tri_Citadel.jpg"
+    ]
+  },
+  {
+    name: "Động Phong Nha – Di tích văn hóa",
+    year: 2003,
+    lat: 17.5374,
+    lng: 106.1458,
+    period: "Hiện đại",
+    region: "Trung",
+    description: "Phong Nha – Kẻ Bàng được UNESCO công nhận là Di sản thiên nhiên thế giới.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/2/2e/Phong_Nha_Cave_Quang_Binh.jpg"
+    ]
+  },
+
+  // Miền Nam
+  {
+    name: "Địa đạo Củ Chi",
+    year: 1960,
+    lat: 11.1471,
+    lng: 106.4994,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Mạng lưới địa đạo thời kháng chiến chống Mỹ, biểu tượng cho chiến tranh du kích.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/f/fb/CuChi_Tunnels.jpg"
+    ]
+  },
+  {
+    name: "Chiến dịch Hồ Chí Minh",
+    year: 1975,
+    lat: 10.776,
+    lng: 106.695,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Quân Giải phóng tiến vào Sài Gòn.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/0/0c/Ho_Chi_Minh_City_Reunification_Palace.jpg"
+    ]
+  },
+  {
+    name: "Dinh Độc Lập (Hội trường Thống Nhất)",
+    year: 1975,
+    lat: 10.7769,
+    lng: 106.6958,
+    period: "Hiện đại",
+    region: "Nam",
+    description: "Biểu tượng của ngày thống nhất đất nước 30/4/1975.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/3/38/Reunification_Palace.jpg"
+    ]
+  },
+  {
+    name: "Chợ Bến Thành",
+    year: 1914,
+    lat: 10.7722,
+    lng: 106.6983,
+    period: "Pháp thuộc",
+    region: "Nam",
+    description: "Một trong những biểu tượng lâu đời của TP. Hồ Chí Minh.",
+    images: [
+      "https://upload.wikimedia.org/wikipedia/commons/6/67/Ben_Thanh_Market.jpg"
+    ]
+  },
+  {
+  name: "Hội An – Di sản văn hóa thế giới",
+  year: 1999,
+  lat: 15.8794,
+  lng: 108.335,
+  period: "Hiện đại",
+  region: "Trung",
+  description: "Phố cổ Hội An được UNESCO công nhận là Di sản văn hóa thế giới.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/3/32/HoiAnAncientTown.jpg"
+  ]
+},
+{
+  name: "Thánh địa Mỹ Sơn",
+  year: 700,
+  lat: 15.765,
+  lng: 108.117,
+  period: "Hiện đại",
+  region: "Trung",
+  description: "Di tích Chăm Pa quan trọng được UNESCO công nhận.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/2/2a/My_Son_Champa.jpg"
+  ]
+},
+{
+  name: "Cố đô Huế",
+  year: 1802,
+  lat: 16.4637,
+  lng: 107.5909,
+  period: "Nguyễn",
+  region: "Trung",
+  description: "Kinh đô của triều Nguyễn, Di sản văn hóa thế giới.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/5/5e/Citadel_of_Hue.jpg"
+  ]
+},
+{
+  name: "Bến Nhà Rồng",
+  year: 1911,
+  lat: 10.762913,
+  lng: 106.705185,
+  period: "Hiện đại",
+  region: "Nam",
+  description: "Nơi Bác Hồ ra đi tìm đường cứu nước.",
+  images: [
+    "https://upload.wikimedia.org/wikipedia/commons/0/00/BenNhaRong.jpg"
+  ]
+}
+
+];
+  var markerGroup = L.layerGroup().addTo(map);
+  var allMarkers = [];
+
+  data.forEach(event => {
+    var pc = `<div style="max-width:300px;">
+                <b>${event.name}</b><br><i>${event.period} — ${event.year}</i><br>
+                <p>${event.description}</p>`;
+    if (event.images?.length){
+      pc += '<div class="popup-gallery">';
+      event.images.forEach((img,i)=>{
+        pc += `<a href="trainghiem.html?name=${encodeURIComponent(event.name)}">
+         <img src="${img}" alt="${event.name} ảnh ${i+1}">
+       </a>`;
+
+      });
+      pc += '</div>';
+    }
+    if (event.video){
+      pc += `<iframe width="100%" height="200" src="${event.video}" frameborder="0" allowfullscreen></iframe>`;
+    }
+    pc += '</div>';
+
+    var m = L.marker([event.lat, event.lng], {
+      icon: icons[event.period] || icons["Hiện đại"]
+    }).bindPopup(pc);
+
+    m.eventData = event;
+    allMarkers.push(m);
+    markerGroup.addLayer(m);
+  });
+
+  function applyFilters(){
+    var selP = Array.from(document.querySelectorAll('.period-filter:checked')).map(cb=>cb.value);
+    var selR = Array.from(document.querySelectorAll('.region-filter:checked')).map(cb=>cb.value);
+    var maxY = +document.getElementById('yearRange').value;
+    document.getElementById('yearValue').textContent = maxY;
+
+    markerGroup.clearLayers();
+    allMarkers.forEach(m=>{
+      const e = m.eventData;
+      if (selP.includes(e.period) && selR.includes(e.region) && e.year <= maxY){
+        markerGroup.addLayer(m);
+      }
+    });
+  }
+
+  document.querySelectorAll('.period-filter, .region-filter')
+    .forEach(cb=>cb.addEventListener('change', applyFilters));
+  document.getElementById('yearRange').addEventListener('input', applyFilters);
+  applyFilters();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triển lãm AI & Di tích Việt Nam</title>
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2e1e10;
+      padding: 0.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img.logo {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    nav a:hover {
+      color: var(--btn-hover);
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      text-align: center;
+      overflow: hidden;
+    }
+
+   .background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  /* XÓA hoặc COMMENT filter nếu có */
+  /* filter: blur(5px) brightness(0.7); */
+}
+
+
+
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .subheading {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+    .btn {
+      background: transparent;
+      border: 2px solid var(--text-light);
+      color: var(--text-light);
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background: var(--btn-hover);
+      color: #000;
+    }
+
+    .spacer-image {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 2rem auto;
+      border-radius: 12px;
+    }
+
+    .info-section {
+      background-image: url('images/123.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .info-section .card {
+      background-color: rgba(44, 29, 17, 0.8);
+      color: #fff1c7;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    
+
+    .ai-gallery {
+      background: url('images/2323.jpg') center/cover no-repeat fixed;
+      padding: 15px 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      backdrop-filter: blur(4px);
+    }
+
+    .ai-card {
+      background: rgba(44, 29, 17, 0.85);
+      border: 5px double #ffd700;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .ai-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+
+    .ai-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .ai-card h3, .ai-card p, .btn-audio {
+      margin-left: 1rem;
+    }
+
+    .ai-card h3 {
+      margin-top: 1rem;
+    }
+
+    .btn-audio {
+      background-color: #ffecb3;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: background 0.3s ease, transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-audio:hover {
+      background-color: #ffe082;
+      transform: translateY(-2px);
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo/logo.png" alt="Logo" class="logo" />
+    <nav>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="gioithieu.html">Giới thiệu</a></li>
+        <li><a href="trainghiem.html">Trải nghiệm</a></li>
+        <li><a href="taotranh.html">Tạo tranh</a></li>
+        <li><a href="giaoduc.html">Giáo dục</a></li>
+        <li><a href="congdong.html">Cộng đồng</a></li>
+        <li id="auth-link"><a href="dangnhap.html">Đăng nhập</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="images/videogioithieu.mp4" type="video/mp4">
+      Trình duyệt của bạn không hỗ trợ video.
+    </video>
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>Triển lãm AI & Di tích Việt Nam</h1>
+      <p style=" color: #ebd390;" class="subheading">Nối kết quá khứ & tương lai</p>
+      <a style="background-color: #524602;"  href="gioithieu.html" class="btn">Giới thiệu</a>
+    </div>
+  </main>
+    <img class="spacer-image" src="images/banner.png" alt="Trang trí kết nối" />
+  <section class="info-section">
+    <div class="card">
+      <h1>Trải nghiệm</h1>
+       <p>
+        Trang web triển lãm tranh AI về di tích lịch sử Việt Nam mang đến một hành trình thị giác độc đáo, nơi người xem được đắm chìm trong những tác phẩm nghệ thuật số được tạo ra bởi trí tuệ nhân tạo. Mỗi bức tranh khơi gợi cảm xúc hoài niệm về những di tích huyền thoại, đồng thời kết hợp hơi thở hiện đại qua công nghệ.
+      </p>
+      <p>Khám phá các tác phẩm nghệ thuật độc đáo, nơi công nghệ AI tái hiện vẻ đẹp văn hóa Việt Nam.</p>
+    </div>
+    <div class="card">
+      <h2>Tạo tranh</h2>
+      <p>Chào mừng bạn đến với không gian sáng tạo của Triển lãm Tranh AI – Di tích Việt Nam. Tại đây, bạn có thể tự tay tạo ra bức tranh mang phong cách cổ điển kết hợp hiện đại, lấy cảm hứng từ những địa danh lịch sử quen thuộc.</p>
+      <p>Chỉ cần nhập mô tả ngắn gọn về di tích bạn muốn tái hiện, và công nghệ AI sẽ biến ý tưởng của bạn thành hiện thực. Hãy cùng khám phá sức mạnh của trí tuệ nhân tạo trong việc tái hiện vẻ đẹp văn hóa Việt Nam!</p>
+    </div>
+    <div class="card">
+      <h2>Giáo dục & Cộng đồng</h2>
+      <p>Trang Giáo dục là cầu nối giữa truyền thống và hiện đại, giúp học sinh – sinh viên và giáo viên dễ dàng tiếp cận kiến thức lịch sử thông qua các công cụ tương tác và hình ảnh do AI tạo ra.</p>
+      <p>Đây là nơi mọi người cùng nhau chia sẻ tranh AI đã tạo, bình luận, góp ý và tổ chức các cuộc thi sáng tác lấy cảm hứng từ di tích Việt Nam.</p>
+    </div>
+  </section>
+  <img class="spacer-image" src="images/banner.png" alt="Trang trí kết nối" />
+ <h1 style="text-align: center;">ẢNH NỔI BẬT</h1>
+  <section class="ai-gallery" >
+    <div class="ai-card">
+      <img src="images/nhatho.png" alt="Ảnh hoàn kiếm" />
+      <h3>NHÀ THỜ ĐỨC BÀ</h3>
+      <p> Nhà thờ Đức Bà Sài Gòn, tên chính thức là Vương cung thánh đường Chính tòa Đức Bà Sài Gòn, là một trong những công trình kiến trúc biểu tượng và lâu đời nhất tại Thành phố Hồ Chí Minh. Nằm ở trung tâm Quận 1, tại số 01 Công xã Paris, công trình này thu hút đông đảo du khách và người dân địa phương bởi vẻ đẹp cổ kính và giá trị lịch sử.</p>
+      <button class="btn-audio" onclick="toggleAudio('audio1')">
+        🔊 Nghe mô tả
+      </button>
+      <audio id="audio1" src="audio/vanmieu.mp3"></audio>
+    </div>
+    <div class="ai-card">
+      <img src="images/baotang.png" alt="Di tích Huế" />
+      <h3>BẢO TÀNG CHIẾN TRANH</h3>
+      <p>Bảo tàng Chứng tích Chiến tranh là một trong những bảo tàng nổi tiếng và quan trọng nhất tại Thành phố Hồ Chí Minh, tọa lạc tại địa chỉ 28 Võ Văn Tần, Phường Võ Thị Sáu, Quận 3. Bảo tàng chuyên trưng bày những tư liệu, hình ảnh và hiện vật liên quan đến cuộc Chiến tranh Việt Nam (hay còn gọi là Chiến tranh chống Mỹ cứu nước) và những hậu quả mà nó gây ra.</p>
+      <button class="btn-audio" onclick="toggleAudio('audio2')">
+        🔊 Nghe mô tả
+      </button>
+      <audio id="audio2" src="audio/mo-ta-2.mp3"></audio>
+    </div>
+  </section>
+   <section class="ai-gallery">
+    <div class="ai-card">
+      <img src="images/diadao.png" alt="Ảnh hoàn kiếm" />
+      <h3>ĐỊA ĐẠO CỦ CHI</h3>
+      <p>Địa đạo Củ Chi là một hệ thống đường hầm ngầm khổng lồ nằm ở huyện Củ Chi, cách trung tâm Thành phố Hồ Chí Minh khoảng 70 km về phía Tây Bắc. Đây là một di tích lịch sử quốc gia đặc biệt, đóng vai trò quan trọng trong cuộc kháng chiến chống Mỹ của quân và dân Việt Nam.</p>
+      <button class="btn-audio" onclick="toggleAudio('audio1')">
+        🔊 Nghe mô tả
+      </button>
+      <audio id="audio1" src="audio/vanmieu.mp3"></audio>
+    </div>
+    <div class="ai-card">
+      <img src="images/bencang.png" alt="Di tích Huế" />
+      <h3>BẾN CẢNG NHÀ RỒNG</h3>
+      <p>Bến cảng Nhà Rồng, hay còn gọi là Bảo tàng Hồ Chí Minh – Chi nhánh Thành phố Hồ Chí Minh, là một di tích lịch sử quan trọng nằm tại số 1 Nguyễn Tất Thành, Phường 12, Quận 4, Thành phố Hồ Chí Minh.</p>
+      <button class="btn-audio" onclick="toggleAudio('audio2')">
+        🔊 Nghe mô tả
+      </button>
+      <audio id="audio2" src="audio/mo-ta-2.mp3"></audio>
+    </div>
+  </section>
+ <!-- Giới thiệu về công ty -->
+<section id="lienhe"
+    style="background-color: #2b1d11; color: #ccc2a3; padding: 20px; text-align: left;">
+    <div class="container" style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; gap: 40px;">
+
+        <!-- Cột trái: Thông tin công ty -->
+        <div class="left-info" style="flex: 1; min-width: 300px;">
+            <h2 style="font-size: 36px; font-weight: bold; color: #ffd700; letter-spacing: 1px;">GIỚI THIỆU VỀ CHÚNG TÔI
+            </h2>
+            <p style="font-size: 17px; margin-top: 10px;">TRIỂN LÃM NGHỆ THUẬT LỊCH SỬ</p>
+
+            <h3 style="color: #fcd34d; font-weight: 600;">CÔNG TY TNHH MT4</h3>
+            <p>Xây dựng một website trải nghiệm nghệ thuật AI tương tác, kể chuyện lịch sử Việt Nam thông qua tranh ảnh, giúp lan tỏa giá trị văn hóa và tạo cộng đồng người dùng sáng tạo.
+            </p>
+
+            <p><span style="color: #ff3366;">📞 Hotline:</span><br>0399.148.815
+            </p>
+
+            <p><span style="color: #ff3366;">🐀𐃍𘄐ịa chỉ:</span><br>26 đường số 23, Bình Trưng Đông, Quận 2, Thành phố Hồ Chí Minh
+            </p>
+
+            <a href="tel:0989015151"
+                style="display: inline-block; margin-top: 16px; padding: 12px 28px; font-weight: bold; border: 2px solid darkred; color: white; border-radius: 10px; background-color: red; box-shadow: 0 6px 15px rgba(255, 0, 0, 0.3); transition: 0.3s; text-decoration: none;">
+                LIÊN HỆ NGAY
+            </a>
+        </div>
+
+        <!-- Cột phải: Google Map -->
+        <div class="right-map" style="flex: 1; min-width: 300px;">
+            <h4 style="color: #ffd700; margin-bottom: 15px;">📌 Vị trí công ty trên bản đồ</h4>
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.3834968450287!2d106.77465077769249!3d10.787729861931647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317526830098c2e3%3A0xcffb6043db6d123b!2zMjYgxJDGsOG7nW5nIHPhu5EgMjMsIELDrG5oIFRyxrBuZyDEkMO0bmcsIFRo4bunIMSQ4bupYywgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e1!3m2!1svi!2s!4v1751130688952!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+  <script>
+    function toggleAudio(id) {
+      const audio = document.getElementById(id);
+      document.querySelectorAll('audio').forEach(a => {
+        if (a !== audio) {
+          a.pause();
+          a.currentTime = 0;
+        }
+      });
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
+  <script src="js/script.js"></script>
+<script>
+  const token = localStorage.getItem("token");
+  const authLink = document.getElementById("auth-link");
+
+  if (token && authLink) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const email = payload.email || "Người dùng";
+
+      authLink.innerHTML = `
+        <span>👋 Xin chào, <b>${email}</b> | <a href="#" onclick="logout()">Đăng xuất</a></span>
+      `;
+    } catch (e) {
+      console.error("Token không hợp lệ", e);
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.reload();
+  }
+</script>
+
+<div>
+  <footer style="background-color: #2b1d11; color: #ccc2a3; padding: 20px; text-align: center;">
+    <p>&copy; 2023 Công ty TNHH MT4. Bảo lưu mọi quyền.</p>
+</div>
+</body>
+</html>

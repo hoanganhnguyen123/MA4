@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đăng nhập - Triển lãm AI & Di tích Việt Nam</title>
+  <style>
+    :root {
+      --bg-dark: #1c1208;
+      --bg-card: #2b1d11;
+      --text-light: #fff1c7;
+      --text-muted: #ccc2a3;
+      --btn-bg: #ffecb3;
+      --btn-hover: #ffe082;
+      --transition: 0.3s ease-in-out;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #3a2a1a;
+      color: var(--text-light);
+    }
+
+    .form-group input:focus {
+      outline: 2px solid var(--btn-hover);
+    }
+
+    .remember-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .forgot-link {
+      color: var(--btn-hover);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      background-color: var(--btn-bg);
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .login-btn:hover {
+      background-color: var(--btn-hover);
+      color: #000;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .back-link a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .back-link a:hover {
+      color: var(--btn-hover);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Đăng nhập</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <div class="form-group remember-group">
+        <label><input type="checkbox" id="rememberMe" /> Ghi nhớ tôi</label>
+        <a href="quenmatkhau.html" class="forgot-link">Quên mật khẩu?</a>
+      </div>
+
+      <button type="submit" class="login-btn">Đăng nhập</button>
+    </form>
+
+    <div class="back-link">
+      <a href="dangky.html">Chưa có tài khoản? Đăng ký</a><br />
+      <a href="index.html">← Quay lại Trang chủ</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault(); // Ngăn reload trang
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Đăng nhập thành công!");
+          localStorage.setItem("token", data.token);
+          window.location.href = "index.html"; // ✅ chuyển trang chính
+        } else {
+          alert(data.message || "Sai tài khoản hoặc mật khẩu");
+        }
+      } catch (err) {
+        console.error("Lỗi:", err);
+        alert("Không thể kết nối đến máy chủ");
+      }
+    });
+  </script>
+</body>
+</html>
