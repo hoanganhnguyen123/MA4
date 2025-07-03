@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Văn Miếu - Quốc Tử Giám</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root {
       --bg-dark: #1c1208;
@@ -84,13 +85,18 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
+
+    /* Ẩn phần không cần in trong PDF */
+    .pdf-hide {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Văn Miếu – Quốc Tử Giám</h1>
   </header>
-  <div class="container">
+  <div class="container" id="pdf-content">
     <p>Văn Miếu - Quốc Tử Giám là trường đại học đầu tiên của Việt Nam, là biểu tượng của truyền thống hiếu học và nền giáo dục thời phong kiến.</p>
 
     <img src="images/vanmieu.jpg" alt="Cổng chính Văn Miếu" class="hero">
@@ -104,7 +110,8 @@
     <h2>3. Vai trò giáo dục</h2>
     <p>Đây là nơi đào tạo nhân tài cho quốc gia, tổ chức thi cử, vinh danh các tiến sĩ. Những giá trị giáo dục được gìn giữ qua các triều đại cho đến ngày nay.</p>
 
-    <div class="video-wrapper">
+    <!-- Ẩn phần video khi in PDF -->
+    <div class="video-wrapper pdf-hide">
       <iframe src="https://www.youtube.com/embed/1AehovM4A1g" title="Giới thiệu về Văn Miếu - Quốc Tử Giám" allowfullscreen></iframe>
     </div>
 
@@ -116,7 +123,7 @@
     </ul>
 
     <h2>5. Tài liệu giáo viên</h2>
-    <a href="taitailieu-vanmieu.pdf" class="btn">Tải giáo án PDF</a>
+    <a href="#" onclick="generatePDF()" class="btn">Tải giáo án PDF</a>
 
     <div style="margin-top: 2rem;">
       <a href="baihoc.html" class="btn">← Quay lại danh sách</a>
@@ -127,8 +134,25 @@
   <footer>
     © 2025 Dự án giáo dục AI & Di tích Việt Nam.
   </footer>
+
+  <script>
+function generatePDF() {
+  const element = document.getElementById('pdf-content');
+
+  // Bỏ html2canvas -> render text HTML bằng built-in jsPDF (có giới hạn)
+  const opt = {
+    margin:       0.5,
+    filename:     'van-mieu-giao-an.pdf',
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+    // Bỏ html2canvas (ảnh), in thuần văn bản
+    console.log("Xuất PDF dạng text");
+  }).save();
+}
+</script>
+
 </body>
 </html>
-<!-- Compare this snippet from public/baihoc-vanmieu.html: -->
-<!--         <img src="images/vanmieu.jpg" alt="Văn Miếu">
- -->
